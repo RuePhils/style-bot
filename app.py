@@ -5,7 +5,7 @@ from openai import OpenAI
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # Title of the app
-st.title("Health Symptom Checker")
+st.title("Style Expert: Personalized Fashion Advice")
 
 # Initialize session state for chat history
 if "messages" not in st.session_state:
@@ -17,12 +17,11 @@ for message in st.session_state.messages:
     with st.chat_message(role):
         st.markdown(content)
 
-# Collect user input for symptoms
-user_input = st.chat_input("Describe your symptoms here...")
+# Collect user input for style guidance
+user_input = st.chat_input("Describe your fashion needs or occasion...")
 
-# Function to get a response from OpenAI with health advice
+# Function to get a response from OpenAI with fashion advice
 def get_response(prompt):
-    # Here, you may include a more specific prompt or fine-tune the assistant's instructions to provide general remedies
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -30,7 +29,6 @@ def get_response(prompt):
             for m in st.session_state.messages
         ] + [{"role": "user", "content": prompt}]
     )
-    # Access the content directly as an attribute
     return response.choices[0].message.content
 
 # Process and display response if there's input
@@ -41,7 +39,7 @@ if user_input:
         st.markdown(user_input)
 
     # Generate assistant's response
-    assistant_prompt = f"User has reported the following symptoms: {user_input}. Provide a general remedy or advice."
+    assistant_prompt = f"User is looking for fashion advice: {user_input}. Provide personalized styling tips and outfit suggestions."
     assistant_response = get_response(assistant_prompt)
     st.session_state.messages.append({"role": "assistant", "content": assistant_response})
     
